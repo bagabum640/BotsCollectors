@@ -9,6 +9,7 @@ public class Base : MonoBehaviour
     [SerializeField] private List<Unit> _units;
     [SerializeField] private Scanner _scanner;
     [SerializeField] private ScoreCounter _scoreCounter;
+    [SerializeField] private float _assingnUnitDelay = 0.5f;
 
     private void Start()
     {
@@ -17,8 +18,20 @@ public class Base : MonoBehaviour
         StartCoroutine(WorkCoroutine());
     }
 
+    public void AddUnit(Unit unit) =>
+        _units.Add(unit);
+
+    public void CollectResource(Resource resource)
+    {
+        resource.Release();
+        _resources.Remove(resource);
+        _scoreCounter.AddScore();
+    }
+
     private IEnumerator WorkCoroutine()
     {
+        WaitForSeconds wait = new(_assingnUnitDelay);
+
         while (enabled)
         {
             if (_scanner.IsScanning == false)
@@ -28,23 +41,13 @@ public class Base : MonoBehaviour
           
             AssignResourceToUnit();
 
-            yield return null;
+            yield return wait;
         }
-    }
-
-    public void AddUnit(Unit unit) =>
-        _units.Add(unit);
-
-    public void CollectResource(Resource resource)
-    {
-        resource.MarkAsTaken();
-        _resources.Remove(resource);
-        _scoreCounter.AddScore();
     }
 
     private void AddResource(Resource resource)
     {
-        if (_resources.Contains(resource) == false && resource.IsReserved == false)
+        if (_resources.Contains(resource) == false && IsResourceAssigned(resource) == false)
             _resources.Add(resource);
     }
 
@@ -54,18 +57,20 @@ public class Base : MonoBehaviour
         {
             Resource resource = FindResource(unit.transform.position);
 
-            if (resource != null && resource.TryReserve())
+            if (resource != null)
             {
                 unit.AssignResource(resource);
-                _resources.Remove(resource);
             }
         }
     }
 
+    private bool IsResourceAssigned(Resource resource) =>
+        _units.Any(unit => unit.AssignedResource == resource);
+
     private Resource FindResource(Vector3 fromPosition)
     {
         return _resources
-            .Where(resource => resource.IsReserved == false)
+            .Where(resource => IsResourceAssigned(resource) == false)
             .OrderBy(resource => (resource.transform.position - fromPosition).sqrMagnitude)
             .FirstOrDefault();
     }

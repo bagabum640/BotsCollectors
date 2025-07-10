@@ -26,13 +26,13 @@ public class Spawner<TObject> : MonoBehaviour where TObject : MonoBehaviour, IPo
 
     protected virtual void ResetObject(TObject @object)
     {
-        @object.Destroyed -= Release;
+        @object.OnReleased -= Release;
         @object.gameObject.SetActive(false);
     }
 
     protected virtual void SetUpObject(TObject @object)
     {
-        @object.Destroyed += Release;
+        @object.OnReleased += Release;
         @object.gameObject.SetActive(true);
     }
 

@@ -6,35 +6,22 @@ public class Resource : MonoBehaviour, IPoolable<Resource>
 {
     private Rigidbody _rigidbody;
 
-    public event Action<Resource> Destroyed;
+    public event Action<Resource> OnReleased;
 
-    [field: SerializeField] public bool IsReserved { get; private set; }
-
-    private void Awake()
-    {
+    private void Awake() =>    
         _rigidbody = GetComponent<Rigidbody>();
-    }
-
-    public void IsPickUp()
+    
+    public void PickUp(Transform holder)
     {
         _rigidbody.isKinematic = true;
+        transform.SetParent(holder);
+        transform.localPosition = Vector3.zero;
     }
 
-    public void MarkAsTaken()
+    public void Release()
     {
-        Destroyed?.Invoke(this);
-        IsReserved = false;
+        OnReleased?.Invoke(this);
         _rigidbody.isKinematic = false;
-    }
-
-    public bool TryReserve()
-    {
-        if(IsReserved == false)
-        {
-            IsReserved = true;
-            return true;
-        } 
-
-        return false;
+        transform.SetParent(null);
     }
 }

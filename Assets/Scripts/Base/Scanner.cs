@@ -22,6 +22,17 @@ public class Scanner : MonoBehaviour
     {
         _scanDelay = new(_scanInterval);
     }
+      
+    public void StartScan()
+    {
+        _currentRadius = 0f;
+        IsScanning = true;
+
+        if (_scanningCoroutine != null)
+            StopCoroutine(_scanningCoroutine);
+
+        _scanningCoroutine = StartCoroutine(ScanningProcess());
+    }
 
     private IEnumerator ScanningProcess()
     {
@@ -37,17 +48,6 @@ public class Scanner : MonoBehaviour
             yield return _scanDelay;
         }       
     }
-      
-    public void StartScan()
-    {
-        _currentRadius = 0f;
-        IsScanning = true;
-
-        if (_scanningCoroutine != null)
-            StopCoroutine(_scanningCoroutine);
-
-        _scanningCoroutine = StartCoroutine(ScanningProcess());
-    }
 
     private void PerformScan()
     {
@@ -59,7 +59,7 @@ public class Scanner : MonoBehaviour
 
         for (int i = 0; i < hitCount; i++)
         {
-            if (_scanResults[i].TryGetComponent(out Resource resource) && resource.IsReserved == false)          
+            if (_scanResults[i].TryGetComponent(out Resource resource))          
                 ResourceFound?.Invoke(resource);          
         }
     }

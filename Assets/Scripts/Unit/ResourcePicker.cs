@@ -13,15 +13,12 @@ public class ResourcePicker : MonoBehaviour
         HasResource = true;   
 
         _currentResource = resource;
-        _currentResource.IsPickUp();
-        _currentResource.transform.SetParent(_handPosition);
-        _currentResource.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        _currentResource.PickUp(_handPosition);
     }
 
     public void DropResource()
     {
         HasResource = false;
-        _currentResource.transform.SetParent(null);
         _currentResource = null;
     }
 }

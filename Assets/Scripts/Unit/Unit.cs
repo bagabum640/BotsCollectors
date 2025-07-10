@@ -10,10 +10,12 @@ public class Unit : MonoBehaviour, IPoolable<Unit>
     private ResourcePicker _picker;
     private UnitStateMachine _stateMachine;
 
-    public event Action<Unit> Destroyed;
+    public event Action<Unit> OnReleased;
 
     [field: SerializeField] public Resource AssignedResource { get; private set; }
     [field: SerializeField] public bool IsBusy { get; private set; }
+
+    public float InteractDistance { get; private set; } = 4f;
 
     private void Awake()
     {
@@ -26,18 +28,11 @@ public class Unit : MonoBehaviour, IPoolable<Unit>
     private void OnEnable() =>
         _stateMachine.SetState<IdleState>();
 
-    private void Update()
-    {
-        if (AssignedResource != null)        
-            IsBusy = true;       
-        else      
-            IsBusy = false;       
-
-        _stateMachine.Update();
-    }
+    private void Update() =>   
+        _stateMachine.Update();    
 
     private void OnDisable() =>
-        Destroyed?.Invoke(this);
+        OnReleased?.Invoke(this);
 
     public void SetStartPosition(Vector3 position) =>
         _mover.Warp(position);
@@ -45,11 +40,14 @@ public class Unit : MonoBehaviour, IPoolable<Unit>
     public Vector3 GetPositionBase() =>
          _base.transform.position;
 
-    public void AssignResource(Resource resource) =>
-        AssignedResource = resource;
-
     public void SetBase(Base @base) =>
         _base = @base;
+
+    public void AssignResource(Resource resource)
+    {
+        AssignedResource = resource;
+        IsBusy = true;
+    }
 
     public void DeliverResource()
     {
@@ -61,5 +59,6 @@ public class Unit : MonoBehaviour, IPoolable<Unit>
     {
         _picker.DropResource();
         AssignedResource = null;
+        IsBusy = false;
     }
 }
