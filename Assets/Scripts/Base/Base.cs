@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class Base : MonoBehaviour
 {
-    [SerializeField] private List<Resource> _resources;
     [SerializeField] private List<Unit> _units;
     [SerializeField] private Scanner _scanner;
+    [SerializeField] private ResourceContainer _resourceContainer;
     [SerializeField] private ScoreCounter _scoreCounter;
     [SerializeField] private float _assingnUnitDelay = 0.5f;
 
     private void Start()
     {
-        _scanner.ResourceFound += AddResource;
+        _scanner.ResourceFound += _resourceContainer.AddResource;
 
         StartCoroutine(WorkCoroutine());
     }
@@ -24,7 +24,7 @@ public class Base : MonoBehaviour
     public void CollectResource(Resource resource)
     {
         resource.Release();
-        _resources.Remove(resource);
+        _resourceContainer.Remove(resource);
         _scoreCounter.AddScore();
     }
 
@@ -35,46 +35,25 @@ public class Base : MonoBehaviour
         while (enabled)
         {
             if (_scanner.IsScanning == false)
-            {
                 _scanner.StartScan();
-            }
-          
+
             AssignResourceToUnit();
 
             yield return wait;
         }
     }
 
-    private void AddResource(Resource resource)
-    {
-        if (_resources.Contains(resource) == false && IsResourceAssigned(resource) == false)
-            _resources.Add(resource);
-    }
-
     private void AssignResourceToUnit()
     {
         foreach (Unit unit in _units.Where(unit => unit.IsBusy == false))
         {
-            Resource resource = FindResource(unit.transform.position);
+            Resource resource = _resourceContainer.FindResource(unit.transform.position);
 
-            if (resource != null)
-            {
+            if (resource != null && _resourceContainer.TryReserve(resource))
                 unit.AssignResource(resource);
-            }
         }
     }
 
-    private bool IsResourceAssigned(Resource resource) =>
-        _units.Any(unit => unit.AssignedResource == resource);
-
-    private Resource FindResource(Vector3 fromPosition)
-    {
-        return _resources
-            .Where(resource => IsResourceAssigned(resource) == false)
-            .OrderBy(resource => (resource.transform.position - fromPosition).sqrMagnitude)
-            .FirstOrDefault();
-    }
-
     private void OnDestroy() =>
-        _scanner.ResourceFound -= AddResource;
+        _scanner.ResourceFound -= _resourceContainer.AddResource;
 }
