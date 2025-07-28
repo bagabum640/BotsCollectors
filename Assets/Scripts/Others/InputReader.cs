@@ -1,50 +1,64 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InputReader : MonoBehaviour
 {
-    private const KeyCode DownKey = KeyCode.Q;
-    private const KeyCode UpKey = KeyCode.E;
+    private const KeyCode AscendKey = KeyCode.Q;
+    private const KeyCode DescendKey = KeyCode.E;
     private const string Horizontal = "Horizontal";
     private const string Vertical = "Vertical";
     private const string MouseX = "Mouse X";
     private const string MouseY = "Mouse Y";
     private const int RightMouseButton = 1;
+    private const int MiddleMouseButton = 2;
+    private const int LeftMouseButton = 0;
 
-    private bool _isUp;
-    private bool _isDown;
-    private bool _isRotation;
+    private bool _isAscending;
+    private bool _isDescending;
+    private bool _isRotating;
+    private bool _isSelecting;
+    private bool _isSettingFlag;
 
     public Vector3 MoveDirection { get; private set; }
-    public Vector3 LookDirection { get; private set; }
+    public Vector3 LookRotation { get; private set; }
 
     private void Update()
     {
         MoveDirection = new(Input.GetAxis(Horizontal),
                             Input.GetAxis(Vertical));
 
-        LookDirection = new(Input.GetAxis(MouseX), 
-                            Input.GetAxis(MouseY));
+        LookRotation = new(Input.GetAxis(MouseX), 
+                           Input.GetAxis(MouseY));
 
-        if (Input.GetKey(UpKey))
-            _isUp = true;
+        if (Input.GetKey(DescendKey))
+            _isAscending = true;
 
-        if (Input.GetKey(DownKey))
-            _isDown = true;
+        if (Input.GetKey(AscendKey))
+            _isDescending = true;
 
-        if (Input.GetMouseButton(RightMouseButton))
-            _isRotation = true;
+        if (Input.GetMouseButton(MiddleMouseButton))
+            _isRotating = true;
+
+        if(Input.GetMouseButton(LeftMouseButton))
+            _isSelecting = true;
+
+        if(Input.GetMouseButton(RightMouseButton))
+            _isSettingFlag = true;
     }
 
     public bool GetIsUpMove() =>
-        GetBoolAsTrigger(ref _isUp);
+        GetBoolAsTrigger(ref _isAscending);
 
     public bool GetIsDownMove() => 
-        GetBoolAsTrigger(ref _isDown);
+        GetBoolAsTrigger(ref _isDescending);
 
     public bool GetIsRotation() => 
-        GetBoolAsTrigger(ref _isRotation);
+        GetBoolAsTrigger(ref _isRotating);
+
+    public bool GetIsSelect() =>
+        GetBoolAsTrigger(ref _isSelecting);
+
+    public bool GetIsSetFlag() =>
+        GetBoolAsTrigger(ref _isSettingFlag);
 
     private bool GetBoolAsTrigger(ref bool value)
     {

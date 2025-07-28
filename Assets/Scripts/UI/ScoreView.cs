@@ -1,21 +1,16 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-[RequireComponent(typeof(Text))]
 public class ScoreView : MonoBehaviour
 {
-    [SerializeField] private ScoreCounter _scoreCounter;
-
-    private Text _scoreText;
-
-    private void Awake() =>
-        _scoreText = GetComponent<Text>();
+    [SerializeField] private ResourceCounter _scoreCounter;
+    [SerializeField] private TMP_Text _scoreText;
 
     private void OnEnable() =>
-        _scoreCounter.ScoreChanged += OnScoreChanged;
+        _scoreCounter.ResourceChanged += OnScoreChanged;
 
     private void OnDisable() =>
-        _scoreCounter.ScoreChanged -= OnScoreChanged;
+        _scoreCounter.ResourceChanged -= OnScoreChanged;
 
     private void OnScoreChanged(int score) =>
         _scoreText.text = score.ToString();

@@ -5,16 +5,16 @@ public class Spawner<TObject> : MonoBehaviour where TObject : MonoBehaviour, IPo
 {
     [SerializeField] private Vector3 _minPosition;
     [SerializeField] private Vector3 _maxPosition;
+    [SerializeField] private TObject Prefab;
     [SerializeField] private int PoolCapacity;
     [SerializeField] private int MaxPoolSize;
-    [SerializeField] private TObject _prefab;
 
     protected ObjectPool<TObject> Pool;
 
     private void Awake()
     {
         Pool = new ObjectPool<TObject>(
-              createFunc: () => Instantiate(_prefab, transform, true),
+              createFunc: () => Instantiate(Prefab, transform, true),
               actionOnGet: (@object) => SetUpObject(@object),
               actionOnRelease: (@object) => ResetObject(@object),
               defaultCapacity: PoolCapacity,

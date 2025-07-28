@@ -26,13 +26,13 @@ public class GatheringState : UnitState
 
         if (_picker.HasResource == false)
         {
-            if (IsInRange(Unit.AssignedResource.transform.position, Unit.InteractDistance))
+            if (IsInRange(Unit.AssignedResource.transform.position, Unit.transform.position, Unit.InteractDistance))
             {
                 _picker.PickResource(Unit.AssignedResource);
                 MoveToBase();
             }
         }
-        else if (IsInRange(Unit.GetPositionBase(), BaseDeliveryDistance))
+        else if (IsInRange(Unit.BasePosition,Unit.transform.position, BaseDeliveryDistance))
         {
             Unit.DeliverResource();
         }
@@ -45,8 +45,5 @@ public class GatheringState : UnitState
         _mover.MoveTo(Unit.AssignedResource.transform.position); 
 
     private void MoveToBase() =>
-        _mover.MoveTo(Unit.GetPositionBase());
-
-    private bool IsInRange(Vector3 target, float range) =>
-         (target - Unit.transform.position).sqrMagnitude <= range;
+        _mover.MoveTo(Unit.BasePosition);
 }

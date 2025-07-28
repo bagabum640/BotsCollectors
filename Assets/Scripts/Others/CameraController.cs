@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
     private const float ZeroRotation = 0f;
 
     [SerializeField] private InputReader _inputReader;
-    [SerializeField] private float _movementSpeed;
+    [SerializeField] private float _moveSpeed;
     [SerializeField] private float _rotationSpeed;
 
     private float _rotateX;
@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
     {
         if (_inputReader.GetIsRotation())
         {
-            Vector2 look = _inputReader.LookDirection;
+            Vector2 look = _inputReader.LookRotation;
             _rotateX += look.x * _rotationSpeed;
             _rotateY -= look.y * _rotationSpeed;
             _rotateY = Mathf.Clamp(_rotateY, -RightAngle, RightAngle);
@@ -34,13 +34,13 @@ public class CameraController : MonoBehaviour
     private void HandleMovement()
     {
         Vector3 move = _inputReader.MoveDirection;
-        Vector3 movement = (transform.forward * move.y + transform.right * move.x) * _movementSpeed;
+        Vector3 movement = (transform.forward * move.y + transform.right * move.x) * _moveSpeed;
 
         if (_inputReader.GetIsUpMove()) 
-            movement += Vector3.up * _movementSpeed;
+            movement += Vector3.up * _moveSpeed;
 
         if (_inputReader.GetIsDownMove()) 
-            movement += Vector3.down * _movementSpeed;
+            movement += Vector3.down * _moveSpeed;
 
         transform.Translate(movement * Time.deltaTime, Space.World);
     }

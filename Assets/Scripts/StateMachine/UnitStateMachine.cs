@@ -7,10 +7,11 @@ public class UnitStateMachine : IStateChanger
 
     private UnitState _currentState;
 
-    public UnitStateMachine(Unit unit, Mover mover, ResourcePicker picker)
+    public UnitStateMachine(Unit unit, Mover mover, ResourcePicker picker, Builder builder)
     {
-        _states.Add(typeof(IdleState), new IdleState(unit, this));
+        _states.Add(typeof(IdleState), new IdleState(unit, builder, this));
         _states.Add(typeof(GatheringState), new GatheringState(unit, mover, picker, this));
+        _states.Add(typeof(BuildState), new BuildState(unit, mover, builder, this));
     }
 
     public void Update() =>

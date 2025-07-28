@@ -725,6 +725,7 @@ GameObject:
   - component: {fileID: 7806635716410668484}
   - component: {fileID: 2098507886336585661}
   - component: {fileID: 6630817154854317635}
+  - component: {fileID: 9137518384655499599}
   - component: {fileID: 8544506434513598970}
   m_Layer: 0
   m_Name: Astronaut
@@ -819,8 +820,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 604660e97d7946040863ef77ecfb2c86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _base: {fileID: 0}
   <AssignedResource>k__BackingField: {fileID: 0}
+  <IsBusy>k__BackingField: 0
 --- !u!114 &6630817154854317635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -835,6 +836,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _handPosition: {fileID: 5790283525642728485}
   <HasResource>k__BackingField: 0
+--- !u!114 &9137518384655499599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5593195909017292627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 109073d1115aa1f4b8e3e29cd52eeab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseSpawner: {fileID: 0}
+  <IsCreating>k__BackingField: 0
 --- !u!114 &8544506434513598970
 MonoBehaviour:
   m_ObjectHideFlags: 0

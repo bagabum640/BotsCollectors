@@ -6,17 +6,25 @@ public class ResourceContainer : MonoBehaviour
 {
     [SerializeField] private List<Resource> _allResources;
     [SerializeField] private List<Resource> _reservedResources;
+    [SerializeField] private Base _base;
+
+    public void Init(Base @base) =>
+        _base = @base;
 
     public void AddResource(Resource resource)
     {
-        if (_allResources.Contains(resource) == false)
-            _allResources.Add(resource);
+        if (ResourceManager.TryClaimResource(resource, _base))
+        {
+            if (_allResources.Contains(resource) == false)
+                _allResources.Add(resource);
+        }
     }
 
     public void Remove(Resource resource)
     {
         _allResources.Remove(resource);
         _reservedResources.Remove(resource);
+        ResourceManager.ReleaseResource(resource);
     }
 
     public Resource FindResource(Vector3 fromPosition)
