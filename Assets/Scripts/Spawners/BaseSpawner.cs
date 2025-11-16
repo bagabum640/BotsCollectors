@@ -4,8 +4,7 @@ using UnityEngine;
 public class BaseSpawner : Spawner<Base>
 {
     [SerializeField] private ConstructionService _constructionService;
-    [SerializeField] private ResourceCounter _resourceCounter;
-
+    [SerializeField] private ResourceContainer _resourceContainer;
     [SerializeField] private float _delay = 1f;
 
     private WaitForSeconds _wait;
@@ -20,7 +19,7 @@ public class BaseSpawner : Spawner<Base>
         Base @base = Pool.Get();
 
         @base.transform.position = flagPosition;
-        @base.Init(_constructionService, _resourceCounter);  
+        @base.Init(_constructionService, _resourceContainer);  
         unit.SetBase(@base);
         @base.AddUnit(unit);
     }

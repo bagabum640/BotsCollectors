@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Scanner : MonoBehaviour
 {
-    [SerializeField] private ResourceContainer _resourceContainer;
     [SerializeField] private LayerMask _scanLayerMask = ~0;
     [SerializeField] private float _maxRadius = 20f;
     [SerializeField] private float _scanInterval = 0.4f;
@@ -19,9 +18,9 @@ public class Scanner : MonoBehaviour
 
     public bool IsScanning { get; private set; }
 
-    private void Start() =>   
+    private void Start() =>
         _scanDelay = new(_scanInterval);
-    
+
     public void StartScan()
     {
         _currentRadius = 0f;
@@ -58,11 +57,8 @@ public class Scanner : MonoBehaviour
 
         for (int i = 0; i < hitCount; i++)
         {
-            if (_scanResults[i].TryGetComponent(out Resource resource) && resource.OnGround)
+            if (_scanResults[i].TryGetComponent(out Resource resource))
             {
-                if (ResourceManager.IsResourceOwnedBy(resource, null))
-                    continue;
-
                 ResourceFound?.Invoke(resource);
             }
         }

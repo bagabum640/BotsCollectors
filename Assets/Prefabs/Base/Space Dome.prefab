@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4058950371726313991}
   - component: {fileID: 7309236255916145359}
   - component: {fileID: 4453237484992688715}
+  - component: {fileID: 7237201766509983349}
   m_Layer: 0
   m_Name: ScoreView
   m_TagString: Untagged
@@ -186,8 +187,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98da20adb43b14d44bf919ed6dd3b2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _resourceCounter: {fileID: 411120848526191849, guid: e67e62592052c604d9126bc9b317063b, type: 3}
+  _resourceCounter: {fileID: 7237201766509983349}
   _scoreText: {fileID: 7309236255916145359}
+--- !u!114 &7237201766509983349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9747223851600906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c3431ecfd5aad542b671c64ebeb69bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5279359569043514776
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,7 +216,6 @@ GameObject:
   - component: {fileID: 3177985897749858321}
   - component: {fileID: 4302473426267237385}
   - component: {fileID: 6600149571302780466}
-  - component: {fileID: -217767556218057647}
   m_Layer: 0
   m_Name: Space Dome
   m_TagString: Untagged
@@ -315,10 +327,9 @@ MonoBehaviour:
   _units: []
   _scanner: {fileID: 4302473426267237385}
   _constructionService: {fileID: 0}
-  _resourceContainer: {fileID: -217767556218057647}
-  _resourceCounter: {fileID: 0}
+  _resourceContainer: {fileID: 0}
+  _resourceCounter: {fileID: 7237201766509983349}
   _selection: {fileID: 212139783067077834}
-  _scoreView: {fileID: 4453237484992688715}
   _assingnUnitDelay: 0.5
   <Flag>k__BackingField: {fileID: 5993916729179293684}
 --- !u!114 &4302473426267237385
@@ -333,11 +344,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d3dd44c7887cf4896bbb21b0f88550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _resourceContainer: {fileID: -217767556218057647}
   _scanLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  _maxRadius: 60
+  _maxRadius: 10
   _scanInterval: 0.2
   _scanSpeed: 100
 --- !u!114 &6600149571302780466
@@ -361,21 +371,6 @@ MonoBehaviour:
   _startAmount: 3
   _spawnDelay: 0.5
   _canSpawn: 0
---- !u!114 &-217767556218057647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5279359569043514776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b72aeae599f1d4346a4c2f7cea7c8e20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _allResources: []
-  _reservedResources: []
-  _base: {fileID: 3177985897749858321}
 --- !u!1 &7468386486872465988
 GameObject:
   m_ObjectHideFlags: 0

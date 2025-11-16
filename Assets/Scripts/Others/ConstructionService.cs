@@ -8,8 +8,9 @@ public class ConstructionService : MonoBehaviour
     private const int MinAmountUnitsForCreateNewBase = 1;
 
     [SerializeField] private BaseSpawner _baseSpawner;
-    [SerializeField] private ResourceCounter _resourceCounter;
     [SerializeField] private BaseSelector _baseSelector;
+
+    private Base _currentBase;
 
     private bool _isBaseConstructionInProgress = false;
 
@@ -20,8 +21,9 @@ public class ConstructionService : MonoBehaviour
 
     public bool CanBuildNewBase(Base @base)
     {
-        if (_isBaseConstructionInProgress == false && (_resourceCounter.ResourceAmount >= BaseCost && @base.AmountUnits > MinAmountUnitsForCreateNewBase))
+        if (_isBaseConstructionInProgress == false && (@base.ResourceCounter.ResourceAmount >= BaseCost && @base.AmountUnits > MinAmountUnitsForCreateNewBase))
         {
+            _currentBase = @base;
             return true;
         }
 
@@ -33,7 +35,7 @@ public class ConstructionService : MonoBehaviour
         foreach (Unit unit in units.Where(unit => unit.IsBusy == false))
         {
             _isBaseConstructionInProgress = true;
-            _resourceCounter.RemoveScore(BaseCost);
+            _currentBase.ResourceCounter.RemoveScore(BaseCost);
             StartCoroutine(_baseSpawner.Create(unit, flagPosition));
             _baseSelector.DeactiveFlag();
             units.Remove(unit);

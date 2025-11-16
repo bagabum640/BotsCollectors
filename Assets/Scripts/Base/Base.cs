@@ -15,7 +15,6 @@ public class Base : MonoBehaviour, IPoolable<Base>
     [SerializeField] private ResourceContainer _resourceContainer;
     [SerializeField] private ResourceCounter _resourceCounter;
     [SerializeField] private SelectionIndicator _selection;
-    [SerializeField] private ScoreView _scoreView;
     [SerializeField] private float _assingnUnitDelay = 0.5f;
 
     public event Action<Base> OnReleased;
@@ -23,20 +22,18 @@ public class Base : MonoBehaviour, IPoolable<Base>
 
     [field: SerializeField] public Flag Flag { get; private set; }
     public SelectionIndicator Selection => _selection;
+    public ResourceCounter ResourceCounter => _resourceCounter;
     public int AmountUnits => _units.Count;
     public bool FlagIsActive => Flag.gameObject.activeInHierarchy;
 
-    public void Init(ConstructionService constructionService, ResourceCounter resourceCounter)
+    public void Init(ConstructionService constructionService, ResourceContainer resourceContainer)
     {
         _constructionService = constructionService;
-        _resourceCounter = resourceCounter;
-
-        _scoreView.Init(_resourceCounter);
+        _resourceContainer = resourceContainer;
     }
 
     private void Start()
     {
-        _resourceContainer.Init(this);
         _scanner.ResourceFound += _resourceContainer.AddResource;
 
         _constructionService.ResetConstructionState();
@@ -81,7 +78,7 @@ public class Base : MonoBehaviour, IPoolable<Base>
 
     private void TrySpawnNewUnit()
     {
-        if (_units.Count < MaxAmoutUnit && FlagIsActive == false)
+        if (_units.Count == 1 || (_units.Count < MaxAmoutUnit && FlagIsActive == false))
         {
             if (_resourceCounter.ResourceAmount >= UnitCost)
             {
